@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>隐私政策 - SpeakNote / Privacy Policy - SpeakNote</title>
+    <style>
+        :root {
+            --primary: #2563EB;
+            --primary-light: #60A5FA;
+            --bg: #FFFFFF;
+            --surface: #F8F9FA;
+            --text: #1A1A1A;
+            --text-secondary: #6B7280;
+            --border: #F0F0F0;
+            --radius-card: 20px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+            background: var(--bg); color: var(--text);
+            line-height: 1.7; -webkit-font-smoothing: antialiased;
+        }
+        .navbar {
+            position: fixed; top: 0; left: 0; right: 0; height: 64px;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 24px;
+            background: rgba(255,255,255,.88); backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px); z-index: 100;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-left { display: flex; align-items: center; gap: 24px; }
+        .nav-logo { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; color: var(--text); text-decoration: none; }
+        .nav-logo span { color: var(--primary); }
+        .nav-links { display: flex; align-items: center; gap: 16px; }
+        .nav-links a { text-decoration: none; color: var(--text-secondary); font-size: 15px; transition: color .2s; }
+        .nav-links a:hover { color: var(--primary); }
+
+        /* Language Toggle */
+        .lang-toggle {
+            display: flex; align-items: center; gap: 0;
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 50px; padding: 2px; cursor: pointer;
+            user-select: none; -webkit-tap-highlight-color: transparent;
+        }
+        .lang-toggle span {
+            width: 36px; height: 28px; display: flex; align-items: center; justify-content: center;
+            font-size: 13px; font-weight: 600; border-radius: 50px;
+            transition: all .25s ease; color: var(--text-secondary);
+        }
+        .lang-toggle span.active {
+            background: var(--primary); color: white; box-shadow: 0 2px 8px rgba(37,99,235,.3);
+        }
+
+        .container { max-width: 780px; margin: 0 auto; padding: 100px 24px 60px; }
+
+        h1 { font-size: 32px; font-weight: 800; letter-spacing: -1px; margin-bottom: 8px; }
+        .subtitle { color: var(--text-secondary); font-size: 15px; margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
+
+        h2 { font-size: 20px; font-weight: 700; margin: 36px 0 14px; color: var(--text); }
+        .section-num {
+            display: inline-flex; width: 28px; height: 28px; border-radius: 50%;
+            background: var(--primary); color: white; font-size: 14px;
+            font-weight: 700; align-items: center; justify-content: center;
+            margin-right: 10px; vertical-align: middle;
+        }
+        h3 { font-size: 16px; font-weight: 700; margin: 20px 0 10px; color: var(--text); }
+        p { font-size: 15px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        ul, ol { padding-left: 22px; margin-bottom: 16px; }
+        li { font-size: 15px; color: var(--text-secondary); margin-bottom: 7px; line-height: 1.65; }
+
+        .highlight-box {
+            background: linear-gradient(135deg,#EFF6FF,#DBEAFE);
+            border-radius: var(--radius-card); padding: 24px 28px;
+            margin: 24px 0; border-left: 4px solid var(--primary);
+        }
+        .highlight-box p { color: var(--text); font-weight: 500; margin-bottom: 4px; font-size: 15px; }
+
+        table { width: 100%; border-collapse: collapse; margin-bottom: 18px; font-size: 14px; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,.04); }
+        th { text-align: left; background: var(--surface); padding: 12px 16px; font-weight: 600; color: var(--text); border-bottom: 2px solid var(--border); font-size: 13px; }
+        td { padding: 11px 16px; color: var(--text-secondary); border-bottom: 1px solid var(--border); vertical-align: top; font-size: 14px; line-height: 1.55; }
+        tr:last-child td { border-bottom: none; }
+
+        .badge-local { background: #ECFDF5; color: #059669; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 50px; display: inline-block; white-space: nowrap; }
+        .badge-remote { background: #FEF3C7; color: #D97706; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 50px; display: inline-block; white-space: nowrap; }
+        .badge-none { background: #FEE2E2; color: #DC2626; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 50px; display: inline-block; white-space: nowrap; }
+
+        a { color: var(--primary); text-decoration: none; word-break: break-all; }
+        a:hover { text-decoration: underline; }
+
+        .contact-box {
+            background: var(--surface); border-radius: var(--radius-card);
+            padding: 20px 24px; margin-top: 12px; display: inline-block;
+        }
+        .contact-box a { font-family: monospace; font-size: 15px; }
+
+        .back-link {
+            display: inline-flex; align-items: center; gap: 6px;
+            color: var(--primary); text-decoration: none; font-size: 15px; font-weight: 600;
+            margin-top: 40px; transition: opacity .2s;
+        }
+        .back-link:hover { opacity: .75; }
+
+        footer {
+            border-top: 1px solid var(--border); padding: 24px;
+            text-align: center; color: var(--text-secondary); font-size: 13px; margin-top: 48px;
+        }
+        footer a { color: var(--primary); text-decoration: none; }
+        strong { color: var(--text); }
+
+        @media (max-width: 768px) {
+            .container { padding: 90px 18px 40px; }
+            h1 { font-size: 26px; } h2 { font-size: 17px; .section-num { width: 24px; height: 24px; font-size: 12px; }}
+            table { font-size: 13px; } th, td { padding: 9px 10px; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-left">
+        <a href="index.html" class="nav-logo">Speak<span>Note</span></a>
+    </div>
+    <div class="nav-links">
+        <a href="index.html" data-i18n="nav.back">← 首页</a>
+        <div class="lang-toggle" id="langToggle" onclick="toggleLang()" title="Switch Language / 切换语言">
+            <span id="langZh">中</span>
+            <span id="langEn">EN</span>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <h1 data-i18n="h1">隐私政策</h1>
+    <p class="subtitle" data-i18n="subtitle">📅 最后更新日期：2026 年 5 月 22 日</p>
+
+    <div class="highlight-box">
+        <p data-i18n-html="true" data-i18n="highlight">🔒 核心承诺：语音识别功能<strong>完全在设备本地运行</strong>，不会将您的任何音频或语音数据上传至任何服务器。</p>
+    </div>
+
+    <!-- 1 -->
+    <h2><span class="section-num">1</span><span data-i18n="s1.title">概述</span></h2>
+    <p data-i18n-html="true" data-i18n="s1.p1">感谢您使用「<strong>SpeakNote</strong>」（以下简称"本应用"）。本应用是一款以本地离线语音识别为核心的工具类 App，所有语音处理均在您的设备上完成，无需联网即可实现识别功能。</p>
+    <p data-i18n-html="true" data-i18n="s1.p2">同时，为提升应用稳定性与用户体验，本应用集成了 <strong>Google Play 结算（应用内购买）</strong> 以及 <strong>Firebase 服务（统计分析与崩溃诊断）</strong>。本隐私政策旨在向您透明地说明我们如何收集、使用和保护您的信息。</p>
+    <p data-i18n="s1.p3">使用本应用即表示您同意本隐私政策的条款。</p>
+
+    <!-- 2 -->
+    <h2><span class="section-num">2</span><span data-i18n="s2.title">信息收集与使用</span></h2>
+    <p data-i18n="s2.intro">本应用仅在必要范围内收集信息，具体类别及用途如下：</p>
+    <table>
+        <tr><th data-i18n="s2.th1">信息类型</th><th data-i18n="s2.th2">用途</th><th data-i18n="s2.th3">是否上传云端 / 处理方式</th></tr>
+        <tr>
+            <td>🎤 <span data-i18n="s2.r1c1">麦克风音频数据</span></td>
+            <td data-i18n="s2.r1c2">本地语音识别（ASR）转写为文字</td>
+            <td><span class="badge-local" data-i18n="s2.badge_local_label">仅本地</span> <span data-i18n="s2.r1c3">完全在设备本地处理，不上传任何服务器，卸载后自动清除</span></td>
+        </tr>
+        <tr>
+            <td>📝 <span data-i18n="s2.r2c1">转写文本记录</span></td>
+            <td data-i18n="s2.r2c2">保存为本地历史记录，支持回听和编辑</td>
+            <td><span class="badge-local" data-i18n="s2.badge_local_label">仅本地</span> <span data-i18n="s2.r2c3">存储于应用沙盒目录，其他应用无法访问</span></td>
+        </tr>
+        <tr>
+            <td>🎬 <span data-i18n="s2.r3c1">录音音频文件</span></td>
+            <td data-i18n="s2.r3c2">关联保存至每条记录，用于回放</td>
+            <td><span class="badge-local" data-i18n="s2.badge_local_label">仅本地</span> <span data-i18n="s2.r3c3">存储于应用沙盒目录</span></td>
+        </tr>
+        <tr>
+            <td>⚙️ <span data-i18n="s2.r4c1">用户偏好设置</span></td>
+            <td data-i18n="s2.r4c2">深色模式、字号大小等（DataStore）</td>
+            <td><span class="badge-local" data-i18n="s2.badge_local_label">仅本地</span> <span data-i18n="s2.r4c3">存储于应用私有目录</span></td>
+        </tr>
+        <tr>
+            <td>💲 <span data-i18n="s2.r5c1">应用内购买记录</span></td>
+            <td data-i18n="s2.r5c2">通过 Google Play 结算验证 Pro 购买状态</td>
+            <td><span class="badge-remote" data-i18n="s2.badge_remote_label">是</span> <span data-i18n="s2.r5c3">我们仅接收 Google Play 的购买凭证，无法获取银行卡等敏感信息</span></td>
+        </tr>
+        <tr>
+            <td>📊 <span data-i18n="s2.r6c1">统计与崩溃日志</span></td>
+            <td data-i18n="s2.r6c2">使用 Firebase 改进稳定性、分析基础使用情况</td>
+            <td><span class="badge-remote" data-i18n="s2.badge_remote_label">是</span> <span data-i18n="s2.r6c3">设备型号、系统版本、启动次数、崩溃堆栈（不含语音/文本内容）</span></td>
+        </tr>
+        <tr>
+            <td>👤 <span data-i18n="s2.r7c1">姓名、邮箱、电话等个人身份信息</span></td>
+            <td data-i18n="s2.r7c2">不适用</td>
+            <td><span class="badge-none" data-i18n="s2.badge_none_label">不收集</span></td>
+        </tr>
+        <tr>
+            <td>📍 <span data-i18n="s2.r8c1">位置信息</span></td>
+            <td data-i18n="s2.r8c2">不适用</td>
+            <td><span class="badge-none" data-i18n="s2.badge_none_label">不收集</span></td>
+        </tr>
+    </table>
+
+    <!-- 3 -->
+    <h2><span class="section-num">3</span><span data-i18n="s3.title">语音数据本地处理说明（重要）</span></h2>
+    <ul>
+        <li data-i18n-html="true" data-i18n="s3.li1">本应用的 ASR 引擎 <strong>完全离线运行</strong>，麦克风捕获的音频仅用于实时本地识别，<strong>绝不会上传至任何云端或第三方服务器</strong>。</li>
+        <li data-i18n-html="true" data-i18n="s3.li2">所有中间文件、识别结果仅保存在设备的 <strong>应用沙盒私有目录</strong> 中，系统权限保护严格，其他应用无法访问。</li>
+        <li data-i18n-html="true" data-i18n="s3.li3"><strong>卸载 App 后</strong>，所有本地存储的录音、转写文本、偏好设置将被系统自动永久删除。</li>
+        <li data-i18n-html="true" data-i18n="s3.li4">本应用 <strong>不会</strong> 将您的语音数据用于任何模型训练、分享或外部传输。</li>
+    </ul>
+
+    <!-- 4 -->
+    <h2><span class="section-num">4</span><span data-i18n="s4.title">权限说明</span></h2>
+    <table>
+        <tr><th data-i18n="s4.th1">权限</th><th data-i18n="s4.th2">用途</th><th data-i18n="s4.th3">何时请求</th></tr>
+        <tr><td data-i18n="s4.r1c1">麦克风（RECORD_AUDIO）</td><td data-i18n="s4.r1c2">采集语音用于本地 ASR 识别</td><td data-i18n="s4.r1c3">首次点击录音按钮时动态申请</td></tr>
+        <tr><td data-i18n="s4.r2c1">通知（POST_NOTIFICATIONS）</td><td data-i18n="s4.r2c2">后台任务状态提醒（如模型解压完成通知）</td><td data-i18n="s4.r2c3">按需申请</td></tr>
+    </table>
+    <p data-i18n="s4.footnote">免费版仅请求上述必要权限。Pro 版额外支持通过 Android SAF 框架导入外部模型文件，不额外申请存储读写权限。</p>
+
+    <!-- 5 -->
+    <h2><span class="section-num">5</span><span data-i18n="s5.title">应用内购买（Google Play 结算）</span></h2>
+    <p data-i18n-html="true" data-i18n="s5.p1">本应用提供一次性购买选项（Pro 高级功能解锁），所有支付通过 <strong>Google Play 结算服务</strong> 完成。您的支付信息受 Google 支付政策保护。</p>
+    <p data-i18n-html="true" data-i18n="s5.p2">我们仅通过 Google Play 提供的购买凭证确认您的付费状态，<strong>无法获取</strong>您的完整银行卡信息或 Google 账户密码。恢复购买或退款均由 Google Play 处理。</p>
+    <p data-i18n-html="true" data-i18n="s5.p3">更多关于 Google 如何处理支付数据，请参考 <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google 隐私政策</a>。</p>
+
+    <!-- 6 -->
+    <h2><span class="section-num">6</span><span data-i18n="s6.title">Firebase 统计与崩溃分析</span></h2>
+    <p data-i18n="s6.p1">为持续优化应用的稳定性和用户体验，我们集成了 Google 的 Firebase 服务（包括 Firebase Analytics 和 Crashlytics）。Firebase 可能会自动收集以下匿名化数据：</p>
+    <ul>
+        <li data-i18n="s6.li1">设备型号、操作系统版本、语言区域设置</li>
+        <li data-i18n="s6.li2">应用启动次数、使用时长、事件统计（如页面访问、功能触发）</li>
+        <li data-i18n-html="true" data-i18n="s6.li3"><strong>崩溃日志</strong>：当应用发生异常时记录的系统状态（<strong>不包含</strong>麦克风数据、语音数据或私人内容）</li>
+    </ul>
+    <p data-i18n-html="true" data-i18n="s6.p2">Firebase 收集的数据完全按照 <a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener noreferrer">Firebase 隐私与安全政策</a> 以及 <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google 隐私政策</a> 处理。这些信息用于汇总分析，无法直接识别您的个人身份。</p>
+
+    <!-- 7 -->
+    <h2><span class="section-num">7</span><span data-i18n="s7.title">第三方服务披露</span></h2>
+    <p data-i18n="s7.intro">下表说明了本应用所集成的第三方 SDK 及其主要作用：</p>
+    <table>
+        <tr><th data-i18n="s7.th1">第三方服务</th><th data-i18n="s7.th2">用途</th><th data-i18n="s7.th3">隐私政策链接</th></tr>
+        <tr>
+            <td data-i18n="s7.r1c1">Google Play 结算 (Billing)</td>
+            <td data-i18n="s7.r1c2">处理应用内 Pro 版购买</td>
+            <td><a href="https://policies.google.com/privacy" target="_blank">policies.google.com/privacy</a></td>
+        </tr>
+        <tr>
+            <td data-i18n="s7.r2c1">Firebase (Analytics & Crashlytics)</td>
+            <td data-i18n="s7.r2c2">统计分析、崩溃诊断</td>
+            <td><a href="https://firebase.google.com/support/privacy" target="_blank">firebase.google.com/support/privacy</a></td>
+        </tr>
+    </table>
+    <p data-i18n="s7.footnote">上述服务可能根据各自隐私政策收集信息，建议您查阅以获取更详细的说明。</p>
+
+    <!-- 8 -->
+    <h2><span class="section-num">8</span><span data-i18n="s8.title">数据存储与安全</span></h2>
+    <ul>
+        <li data-i18n-html="true" data-i18n="s8.li1">本地语音数据和转写文本仅存储于您设备的 <strong>Android 应用沙盒目录</strong>，遵循 Android 安全机制，其他应用无法访问。</li>
+        <li data-i18n-html="true" data-i18n="s8.li2">Firebase 收集的统计和崩溃数据经 <strong>匿名化处理</strong>，存储在 Google Cloud 上，受行业标准安全措施保护。</li>
+        <li data-i18n-html="true" data-i18n="s8.li3">因为我们 <strong>不传输音频/文本内容</strong> 且 <strong>不收集可识别身份的个人信息</strong>，整体隐私风险极低。</li>
+        <li data-i18n-html="true" data-i18n="s8.li4">模型导入功能通过 Android <strong>SAF 框架</strong>（Storage Access Framework）安全获取文件，无需额外的存储读写权限。</li>
+    </ul>
+
+    <!-- 9 -->
+    <h2><span class="section-num">9</span><span data-i18n="s9.title">您的权利与数据删除</span></h2>
+    <ul>
+        <li data-i18n-html="true" data-i18n="s9.li1"><strong>卸载应用</strong>：通过设备的常规方式卸载本应用后，所有本地存储的录音文件、转写文本、偏好设置及模型文件将被系统自动清除。</li>
+        <li data-i18n="s9.li2">您也可以在系统「设置 → 应用 → SpeakNote → 清除数据」中手动移除所有本地生成信息。</li>
+        <li data-i18n-html="true" data-i18n="s9.li3"><strong>Firebase 数据</strong>：由于 Firebase 统计不关联个人账户且仅用于改进产品，我们无法单独删除匿名统计记录。但该数据无法用于识别您的个人身份。</li>
+        <li data-i18n="s9.li4">如果您对数据有特殊要求，请通过本政策底部的联系方式联系我们，我们会尽力协助。</li>
+    </ul>
+
+    <!-- 10 -->
+    <h2><span class="section-num">10</span><span data-i18n="s10.title">儿童隐私保护</span></h2>
+    <p data-i18n="s10.p1">本应用不会故意收集儿童的个人信息。应用本身不要求注册登录、不收集年龄信息，并且语音数据完全离线处理。如果您是家长或监护人，并认为您的孩子未经同意使用了本应用，您可以随时卸载应用或联系我们解决任何疑虑。</p>
+
+    <!-- 11 -->
+    <h2><span class="section-num">11</span><span data-i18n="s11.title">隐私政策的变更</span></h2>
+    <p data-i18n="s11.p1">随着应用功能扩展或法律法规更新，我们可能对本隐私政策进行调整。重大变更（例如数据处理目的变化）将会通过应用内提示等方式通知您。变更后的政策将在本页面顶部显示新的「最后更新日期」。</p>
+
+    <!-- 12 -->
+    <h2><span class="section-num">12</span><span data-i18n="s12.title">联系我们</span></h2>
+    <p data-i18n="s12.p1">如果您对隐私政策有任何疑问、反馈或投诉，欢迎通过以下方式联系：</p>
+    <div class="contact-box">
+        📧 <strong data-i18n="s12.email_label">电子邮箱</strong>：<a href="mailto:yndongyong@gmail.com">yndongyong@gmail.com</a>
+    </div>
+    <p style="margin-top: 14px;" data-i18n="s12.p2">我们将在合理工作日内回复您。</p>
+</div>
+
+<footer>
+    <p data-i18n-html="true" data-i18n="footer.line1">&copy; 2026 SpeakNote. 所有权利保留。 · <a href="privacy.html">隐私政策</a></p>
+    <p style="margin-top: 6px; font-size: 12px;" data-i18n="footer.line2">本页面可在应用「设置 → 关于 → 隐私政策」中随时查看。</p>
+</footer>
+
+<script>
+const T = {
+    zh: {
+        'nav.back': '← 首页', 'h1': '隐私政策', 'subtitle': '📅 最后更新日期：2026 年 5 月 22 日',
+        'highlight': '🔒 核心承诺：语音识别功能<strong>完全在设备本地运行</strong>，不会将您的任何音频或语音数据上传至任何服务器。',
+        's1.title': '概述',
+        's1.p1': '感谢您使用「<strong>SpeakNote</strong>」（以下简称"本应用"）。本应用是一款以本地离线语音识别为核心的工具类 App，所有语音处理均在您的设备上完成，无需联网即可实现识别功能。',
+        's1.p2': '同时，为提升应用稳定性与用户体验，本应用集成了 <strong>Google Play 结算（应用内购买）</strong> 以及 <strong>Firebase 服务（统计分析与崩溃诊断）</strong>。本隐私政策旨在向您透明地说明我们如何收集、使用和保护您的信息。',
+        's1.p3': '使用本应用即表示您同意本隐私政策的条款。',
+        's2.title': '信息收集与使用', 's2.intro': '本应用仅在必要范围内收集信息，具体类别及用途如下：',
+        's2.th1': '信息类型', 's2.th2': '用途', 's2.th3': '是否上传云端 / 处理方式',
+        's2.badge_local_label': '仅本地', 's2.badge_remote_label': '是', 's2.badge_none_label': '不收集',
+        's2.r1c1': '麦克风音频数据', 's2.r1c2': '本地语音识别（ASR）转写为文字', 's2.r1c3': '完全在设备本地处理，不上传任何服务器，卸载后自动清除',
+        's2.r2c1': '转写文本记录', 's2.r2c2': '保存为本地历史记录，支持回听和编辑', 's2.r2c3': '存储于应用沙盒目录，其他应用无法访问',
+        's2.r3c1': '录音音频文件', 's2.r3c2': '关联保存至每条记录，用于回放', 's2.r3c3': '存储于应用沙盒目录',
+        's2.r4c1': '用户偏好设置', 's2.r4c2': '深色模式、字号大小等（DataStore）', 's2.r4c3': '存储于应用私有目录',
+        's2.r5c1': '应用内购买记录', 's2.r5c2': '通过 Google Play 结算验证 Pro 购买状态', 's2.r5c3': '我们仅接收 Google Play 的购买凭证，无法获取银行卡等敏感信息',
+        's2.r6c1': '统计与崩溃日志', 's2.r6c2': '使用 Firebase 改进稳定性、分析基础使用情况', 's2.r6c3': '设备型号、系统版本、启动次数、崩溃堆栈（不含语音/文本内容）',
+        's2.r7c1': '姓名、邮箱、电话等个人身份信息', 's2.r7c2': '不适用',
+        's2.r8c1': '位置信息', 's2.r8c2': '不适用',
+        's3.title': '语音数据本地处理说明（重要）',
+        's3.li1': '本应用的 ASR 引擎 <strong>完全离线运行</strong>，麦克风捕获的音频仅用于实时本地识别，<strong>绝不会上传至任何云端或第三方服务器</strong>。',
+        's3.li2': '所有中间文件、识别结果仅保存在设备的 <strong>应用沙盒私有目录</strong> 中，系统权限保护严格，其他应用无法访问。',
+        's3.li3': '<strong>卸载 App 后</strong>，所有本地存储的录音、转写文本、偏好设置将被系统自动永久删除。',
+        's3.li4': '本应用 <strong>不会</strong> 将您的语音数据用于任何模型训练、分享或外部传输。',
+        's4.title': '权限说明', 's4.th1': '权限', 's4.th2': '用途', 's4.th3': '何时请求',
+        's4.r1c1': '麦克风（RECORD_AUDIO）', 's4.r1c2': '采集语音用于本地 ASR 识别', 's4.r1c3': '首次点击录音按钮时动态申请',
+        's4.r2c1': '通知（POST_NOTIFICATIONS）', 's4.r2c2': '后台任务状态提醒（如模型解压完成通知）', 's4.r2c3': '按需申请',
+        's4.footnote': '免费版仅请求上述必要权限。Pro 版额外支持通过 Android SAF 框架导入外部模型文件，不额外申请存储读写权限。',
+        's5.title': '应用内购买（Google Play 结算）',
+        's5.p1': '本应用提供一次性购买选项（Pro 高级功能解锁），所有支付通过 <strong>Google Play 结算服务</strong> 完成。您的支付信息受 Google 支付政策保护。',
+        's5.p2': '我们仅通过 Google Play 提供的购买凭证确认您的付费状态，<strong>无法获取</strong>您的完整银行卡信息或 Google 账户密码。恢复购买或退款均由 Google Play 处理。',
+        's5.p3': '更多关于 Google 如何处理支付数据，请参考 <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google 隐私政策</a>。',
+        's6.title': 'Firebase 统计与崩溃分析',
+        's6.p1': '为持续优化应用的稳定性和用户体验，我们集成了 Google 的 Firebase 服务（包括 Firebase Analytics 和 Crashlytics）。Firebase 可能会自动收集以下匿名化数据：',
+        's6.li1': '设备型号、操作系统版本、语言区域设置',
+        's6.li2': '应用启动次数、使用时长、事件统计（如页面访问、功能触发）',
+        's6.li3': '<strong>崩溃日志</strong>：当应用发生异常时记录的系统状态（<strong>不包含</strong>麦克风数据、语音数据或私人内容）',
+        's6.p2': 'Firebase 收集的数据完全按照 <a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener noreferrer">Firebase 隐私与安全政策</a> 以及 <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google 隐私政策</a> 处理。这些信息用于汇总分析，无法直接识别您的个人身份。',
+        's7.title': '第三方服务披露', 's7.intro': '下表说明了本应用所集成的第三方 SDK 及其主要作用：',
+        's7.th1': '第三方服务', 's7.th2': '用途', 's7.th3': '隐私政策链接',
+        's7.r1c1': 'Google Play 结算 (Billing)', 's7.r1c2': '处理应用内 Pro 版购买',
+        's7.r2c1': 'Firebase (Analytics & Crashlytics)', 's7.r2c2': '统计分析、崩溃诊断',
+        's7.footnote': '上述服务可能根据各自隐私政策收集信息，建议您查阅以获取更详细的说明。',
+        's8.title': '数据存储与安全',
+        's8.li1': '本地语音数据和转写文本仅存储于您设备的 <strong>Android 应用沙盒目录</strong>，遵循 Android 安全机制，其他应用无法访问。',
+        's8.li2': 'Firebase 收集的统计和崩溃数据经 <strong>匿名化处理</strong>，存储在 Google Cloud 上，受行业标准安全措施保护。',
+        's8.li3': '因为我们 <strong>不传输音频/文本内容</strong> 且 <strong>不收集可识别身份的个人信息</strong>，整体隐私风险极低。',
+        's8.li4': '模型导入功能通过 Android <strong>SAF 框架</strong>（Storage Access Framework）安全获取文件，无需额外的存储读写权限。',
+        's9.title': '您的权利与数据删除',
+        's9.li1': '<strong>卸载应用</strong>：通过设备的常规方式卸载本应用后，所有本地存储的录音文件、转写文本、偏好设置及模型文件将被系统自动清除。',
+        's9.li2': '您也可以在系统「设置 → 应用 → SpeakNote → 清除数据」中手动移除所有本地生成信息。',
+        's9.li3': '<strong>Firebase 数据</strong>：由于 Firebase 统计不关联个人账户且仅用于改进产品，我们无法单独删除匿名统计记录。但该数据无法用于识别您的个人身份。',
+        's9.li4': '如果您对数据有特殊要求，请通过本政策底部的联系方式联系我们，我们会尽力协助。',
+        's10.title': '儿童隐私保护',
+        's10.p1': '本应用不会故意收集儿童的个人信息。应用本身不要求注册登录、不收集年龄信息，并且语音数据完全离线处理。如果您是家长或监护人，并认为您的孩子未经同意使用了本应用，您可以随时卸载应用或联系我们解决任何疑虑。',
+        's11.title': '隐私政策的变更',
+        's11.p1': '随着应用功能扩展或法律法规更新，我们可能对本隐私政策进行调整。重大变更（例如数据处理目的变化）将会通过应用内提示等方式通知您。变更后的政策将在本页面顶部显示新的「最后更新日期」。',
+        's12.title': '联系我们', 's12.p1': '如果您对隐私政策有任何疑问、反馈或投诉，欢迎通过以下方式联系：',
+        's12.email_label': '电子邮箱', 's12.p2': '我们将在合理工作日内回复您。',
+        'footer.line1': '&copy; 2026 SpeakNote. 所有权利保留。 · <a href="privacy.html">隐私政策</a>',
+        'footer.line2': '本页面可在应用「设置 → 关于 → 隐私政策」中随时查看。'
+    },
+    en: {
+        'nav.back': '← Home', 'h1': 'Privacy Policy', 'subtitle': '📅 Last updated: May 22, 2026',
+        'highlight': '🔒 Core Commitment: The speech recognition feature runs <strong>entirely on-device</strong>. No audio or voice data is ever uploaded to any server.',
+        's1.title': 'Overview',
+        's1.p1': 'Thank you for using <strong>SpeakNote</strong> (hereinafter "the App"). This App is a tool centered on local offline speech recognition. All voice processing is performed on your device — no internet connection is needed for recognition.',
+        's1.p2': 'To improve stability and user experience, the App integrates <strong>Google Play Billing (in-app purchases)</strong> and <strong>Firebase services (analytics & crash reporting)</strong>. This Privacy Policy transparently explains how we collect, use, and protect your information.',
+        's1.p3': 'By using this App, you agree to the terms of this Privacy Policy.',
+        's2.title': 'Information Collection & Use', 's2.intro': 'The App only collects information where necessary. Details are as follows:',
+        's2.th1': 'Information Type', 's2.th2': 'Purpose', 's2.th3': 'Uploaded to Cloud / Processing',
+        's2.badge_local_label': 'Local Only', 's2.badge_remote_label': 'Yes', 's2.badge_none_label': 'Not Collected',
+        's2.r1c1': 'Microphone Audio Data', 's2.r1c2': 'Local ASR speech-to-text transcription', 's2.r1c3': 'Processed entirely on-device; never uploaded; automatically removed upon uninstall',
+        's2.r2c1': 'Transcribed Text Records', 's2.r2c2': 'Saved as local history for playback & editing', 's2.r2c3': 'Stored in app sandbox directory; inaccessible to other apps',
+        's2.r3c1': 'Recording Audio Files', 's2.r3c2': 'Linked to each record for playback', 's2.r3c3': 'Stored in app sandbox directory',
+        's2.r4c1': 'User Preferences', 's2.r4c2': 'Dark mode, font size, etc. (DataStore)', 's2.r4c3': 'Stored in app private directory',
+        's2.r5c1': 'In-App Purchase Records', 's2.r5c2': 'Verify Pro purchase status via Google Play Billing', 's2.r5c3': 'We only receive purchase verification from Google Play; we cannot access payment card details',
+        's2.r6c1': 'Analytics & Crash Logs', 's2.r6c2': 'Use Firebase to improve stability & analyze basic usage', 's2.r6c3': 'Device model, OS version, session count, crash stack traces (no voice/text content)',
+        's2.r7c1': 'Name, Email, Phone Number, etc.', 's2.r7c2': 'N/A',
+        's2.r8c1': 'Location Information', 's2.r8c2': 'N/A',
+        's3.title': 'Voice Data Local Processing (Important)',
+        's3.li1': 'The App\'s ASR engine runs <strong>completely offline</strong>. Audio captured by the microphone is used only for real-time local recognition and is <strong>never uploaded to any cloud or third-party server</strong>.',
+        's3.li2': 'All intermediate files and recognition results are stored only in the device\'s <strong>app sandbox private directory</strong>, strictly protected by system permissions.',
+        's3.li3': '<strong>After uninstalling the App</strong>, all locally stored recordings, transcripts, and preferences are automatically and permanently deleted by the system.',
+        's3.li4': 'The App <strong>does not</strong> use your voice data for any model training, sharing, or external transfer.',
+        's4.title': 'Permissions', 's4.th1': 'Permission', 's4.th2': 'Purpose', 's4.th3': 'When Requested',
+        's4.r1c1': 'Microphone (RECORD_AUDIO)', 's4.r1c2': 'Capture audio for local ASR recognition', 's4.r1c3': 'When first tapping the record button',
+        's4.r2c1': 'Notifications (POST_NOTIFICATIONS)', 's4.r2c2': 'Background task status alerts (e.g., model extraction complete)', 's4.r2c3': 'On demand',
+        's4.footnote': 'The Free tier only requests the above essential permissions. The Pro tier additionally supports importing external model files via Android SAF framework without requesting extra storage permissions.',
+        's5.title': 'In-App Purchases (Google Play Billing)',
+        's5.p1': 'The App offers a one-time purchase option (Pro feature unlock). All payments are processed through <strong>Google Play Billing</strong>. Your payment information is protected by Google\'s payment policies.',
+        's5.p2': 'We only verify your purchase status via credentials provided by Google Play. We <strong>cannot access</strong> your full payment card information or Google account password. Purchase restoration and refunds are handled by Google Play.',
+        's5.p3': 'For more on how Google handles payment data, please refer to <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google Privacy Policy</a>.',
+        's6.title': 'Firebase Analytics & Crash Reporting',
+        's6.p1': 'To continuously improve app stability and user experience, we integrate Google\'s Firebase services (including Firebase Analytics and Crashlytics). Firebase may automatically collect the following anonymized data:',
+        's6.li1': 'Device model, OS version, language/locale settings',
+        's6.li2': 'App launch count, session duration, event statistics (e.g., page visits, feature triggers)',
+        's6.li3': '<strong>Crash logs</strong>: System state recorded when an exception occurs (<strong>does not include</strong> microphone data, voice data, or private content)',
+        's6.p2': 'Data collected by Firebase is processed in accordance with the <a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener noreferrer">Firebase Privacy & Security Policy</a> and <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google Privacy Policy</a>. This information is used for aggregate analysis and cannot directly identify you.',
+        's7.title': 'Third-Party Service Disclosure', 's7.intro': 'The following table describes the third-party SDKs integrated into the App and their primary purposes:',
+        's7.th1': 'Third-Party Service', 's7.th2': 'Purpose', 's7.th3': 'Privacy Policy Link',
+        's7.r1c1': 'Google Play Billing', 's7.r1c2': 'Process in-app Pro purchases',
+        's7.r2c1': 'Firebase (Analytics & Crashlytics)', 's7.r2c2': 'Analytics & crash diagnosis',
+        's7.footnote': 'These services may collect information according to their respective privacy policies. We recommend reviewing them for more details.',
+        's8.title': 'Data Storage & Security',
+        's8.li1': 'Local voice data and transcripts are stored only in your device\'s <strong>Android app sandbox directory</strong>, following Android security mechanisms. Other apps cannot access them.',
+        's8.li2': 'Firebase-collected analytics and crash data are <strong>anonymized</strong> and stored on Google Cloud, protected by industry-standard security measures.',
+        's8.li3': 'Because we <strong>do not transmit audio/text content</strong> and <strong>do not collect personally identifiable information</strong>, the overall privacy risk is minimal.',
+        's8.li4': 'Model import uses Android\'s <strong>SAF framework</strong> (Storage Access Framework) for secure file access without extra storage permissions.',
+        's9.title': 'Your Rights & Data Deletion',
+        's9.li1': '<strong>Uninstall the App</strong>: After uninstalling via the device\'s normal method, all locally stored recordings, transcripts, preferences, and model files are automatically cleared by the system.',
+        's9.li2': 'You may also manually remove all locally generated data via System Settings → Apps → SpeakNote → Clear Data.',
+        's9.li3': '<strong>Firebase Data</strong>: Since Firebase analytics are not linked to personal accounts and are only used for product improvement, we cannot individually delete anonymized records. However, this data cannot identify you personally.',
+        's9.li4': 'If you have specific data requirements, please contact us using the information at the bottom of this policy.',
+        's10.title': 'Children\'s Privacy',
+        's10.p1': 'The App does not knowingly collect personal information from children. The App requires no registration or login, collects no age information, and all voice data is processed entirely offline. If you are a parent or guardian and believe your child has used the App without consent, you may uninstall the App or contact us to address any concerns.',
+        's11.title': 'Changes to This Privacy Policy',
+        's11.p1': 'We may update this Privacy Policy as the App\'s features expand or laws/regulations change. Significant changes (e.g., changes to data processing purposes) will be communicated through in-app notices. The updated policy will display a new "Last Updated" date at the top of this page.',
+        's12.title': 'Contact Us', 's12.p1': 'If you have any questions, feedback, or complaints about this Privacy Policy, please contact us at:',
+        's12.email_label': 'Email', 's12.p2': 'We will respond within a reasonable number of business days.',
+        'footer.line1': '&copy; 2026 SpeakNote. All rights reserved. · <a href="privacy.html">Privacy Policy</a>',
+        'footer.line2': 'This page can also be viewed in the App under Settings → About → Privacy Policy.'
+    }
+};
+
+let currentLang = 'zh';
+
+function applyLang(lang) {
+    currentLang = lang;
+    document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+    document.getElementById('langZh').classList.toggle('active', lang === 'zh');
+    document.getElementById('langEn').classList.toggle('active', lang === 'en');
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        const text = T[lang][key];
+        if (text !== undefined) {
+            if (el.hasAttribute('data-i18n-html')) {
+                el.innerHTML = text;
+            } else {
+                el.textContent = text;
+            }
+        }
+    });
+    document.title = lang === 'zh' ? '隐私政策 - SpeakNote' : 'Privacy Policy - SpeakNote';
+    try { localStorage.setItem('speaknote_lang', lang); } catch(e) {}
+}
+
+function toggleLang() {
+    applyLang(currentLang === 'zh' ? 'en' : 'zh');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const saved = (() => { try { return localStorage.getItem('speaknote_lang'); } catch(e) { return null; } })();
+    const preferred = saved || (navigator.language.startsWith('zh') ? 'zh' : 'en');
+    applyLang(preferred);
+});
+</script>
+
+</body>
+</html>

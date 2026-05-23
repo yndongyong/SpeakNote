@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpeakNote - 离线AI语音速记 / Offline AI Voice Notes</title>
+    <style>
+        :root {
+            --primary: #2563EB;
+            --primary-light: #60A5FA;
+            --bg: #FFFFFF;
+            --surface: #F8F9FA;
+            --text: #1A1A1A;
+            --text-secondary: #6B7280;
+            --border: #F0F0F0;
+            --radius-card: 20px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+            background: var(--bg); color: var(--text);
+            line-height: 1.6; -webkit-font-smoothing: antialiased;
+        }
+        .navbar {
+            position: fixed; top: 0; left: 0; right: 0; height: 64px;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 24px;
+            background: rgba(255,255,255,.88); backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px); z-index: 100;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-left { display: flex; align-items: center; gap: 32px; }
+        .nav-logo { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; color: var(--text); }
+        .nav-logo span { color: var(--primary); }
+        .nav-links { display: flex; align-items: center; gap: 24px; }
+        .nav-links a { text-decoration: none; color: var(--text-secondary); font-size: 15px; transition: color .2s; white-space: nowrap; }
+        .nav-links a:hover { color: var(--primary); }
+
+        /* Language Toggle */
+        .lang-toggle {
+            display: flex; align-items: center; gap: 0;
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 50px; padding: 2px; cursor: pointer;
+            user-select: none; -webkit-tap-highlight-color: transparent;
+        }
+        .lang-toggle span {
+            width: 36px; height: 28px; display: flex; align-items: center; justify-content: center;
+            font-size: 13px; font-weight: 600; border-radius: 50px;
+            transition: all .25s ease; color: var(--text-secondary);
+        }
+        .lang-toggle span.active {
+            background: var(--primary); color: white; box-shadow: 0 2px 8px rgba(37,99,235,.3);
+        }
+
+        /* Hero */
+        .hero { padding: 140px 24px 80px; text-align: center; max-width: 800px; margin: 0 auto; }
+        .hero-badge {
+            display: inline-block; padding: 6px 16px; background: #EFF6FF;
+            color: var(--primary); border-radius: 50px; font-size: 13px; font-weight: 600; margin-bottom: 28px;
+        }
+        .hero h1 { font-size: clamp(36px, 6vw, 56px); font-weight: 800; line-height: 1.15; letter-spacing: -1.5px; margin-bottom: 24px; }
+        .hero h1 .hl { background: linear-gradient(135deg, var(--primary), var(--primary-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .hero p { font-size: 18px; color: var(--text-secondary); max-width: 540px; margin: 0 auto 40px; line-height: 1.7; }
+        .hero-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+        .btn-primary {
+            display: inline-flex; align-items: center; gap: 10px;
+            padding: 14px 32px; background: var(--primary); color: white;
+            border-radius: 50px; font-size: 16px; font-weight: 600; text-decoration: none;
+            box-shadow: 0 4px 20px rgba(37,99,235,.35); transition: all .25s ease;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 28px rgba(37,99,235,.45); }
+        .btn-secondary {
+            display: inline-flex; align-items: center; gap: 10px;
+            padding: 14px 32px; background: var(--surface); color: var(--text);
+            border-radius: 50px; font-size: 16px; font-weight: 500; text-decoration: none;
+            border: 1px solid var(--border); transition: all .2s ease;
+        }
+        .btn-secondary:hover { border-color: var(--primary); color: var(--primary); }
+
+        section { padding: 80px 24px; max-width: 1100px; margin: 0 auto; }
+        .section-label { color: var(--primary); font-size: 14px; font-weight: 600; letter-spacing: 1.5px; margin-bottom: 12px; }
+        .section-title { font-size: clamp(28px, 4vw, 40px); font-weight: 800; letter-spacing: -1px; margin-bottom: 16px; }
+        .section-desc { font-size: 17px; color: var(--text-secondary); max-width: 560px; margin-bottom: 48px; line-height: 1.7; }
+
+        /* Features */
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+        .feature-card { background: var(--surface); border-radius: var(--radius-card); padding: 32px; transition: transform .25s ease, box-shadow .25s ease; }
+        .feature-card:hover { transform: translateY(-4px); box-shadow: 0 2px 16px rgba(0,0,0,.06); }
+        .feature-icon { width: 52px; height: 52px; border-radius: 14px; background: linear-gradient(135deg,#EFF6FF,#DBEAFE); display: flex; align-items: center; justify-content: center; margin-bottom: 20px; font-size: 26px; }
+        .feature-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+        .feature-card p { font-size: 15px; color: var(--text-secondary); line-height: 1.65; }
+
+        /* Steps */
+        .steps-section { background: var(--surface); border-radius: 32px; padding: 60px 40px; margin: 0 24px; max-width: 1100px; margin-left: auto; margin-right: auto; }
+        .steps-list { display: flex; flex-direction: column; gap: 28px; margin-top: 40px; }
+        .step-item { display: flex; align-items: flex-start; gap: 20px; }
+        .step-num {
+            flex-shrink: 0; width: 44px; height: 44px; border-radius: 50%;
+            background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700;
+        }
+        .step-content h4 { font-size: 17px; font-weight: 700; margin-bottom: 4px; }
+        .step-content p { font-size: 15px; color: var(--text-secondary); }
+
+        /* Screens */
+        .screens-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 28px; margin-top: 48px; }
+        .screen-item { text-align: center; }
+        .screen-mockup {
+            background: var(--surface); border-radius: 32px; padding: 12px;
+            box-shadow: 0 4px 30px rgba(0,0,0,.08); aspect-ratio: 9/19; overflow: hidden;
+        }
+        .screen-mockup img { width: 100%; height: 100%; object-fit: cover; border-radius: 24px; }
+        .screen-item p { margin-top: 14px; font-size: 14px; font-weight: 600; color: var(--text-secondary); }
+
+        /* Pricing */
+        .pricing-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; max-width: 720px; margin: 48px auto 0; }
+        .price-card { background: var(--surface); border-radius: var(--radius-card); padding: 36px 28px; text-align: center; position: relative; transition: transform .25s ease; }
+        .price-card:hover { transform: translateY(-4px); }
+        .price-card.featured { background: linear-gradient(135deg,#2563EB,#1D4ED8); color: white; }
+        .price-card.featured .price-tag, .price-card.featured .price-desc { color: rgba(255,255,255,.85); }
+        .price-card.featured .fl li { color: rgba(255,255,255,.9); }
+        .price-label { font-size: 13px; font-weight: 600; color: var(--primary); margin-bottom: 8px; }
+        .price-card.featured .price-label { color: #93C5FD; }
+        .price-card h3 { font-size: 22px; font-weight: 700; margin-bottom: 12px; }
+        .price-tag { font-size: 38px; font-weight: 800; margin-bottom: 4px; }
+        .price-desc { font-size: 14px; color: var(--text-secondary); margin-bottom: 24px; }
+        .fl { list-style: none; text-align: left; margin-bottom: 28px; }
+        .fl li { padding: 7px 0; font-size: 15px; display: flex; align-items: center; gap: 10px; }
+        .fl li::before { content: "✓"; font-weight: 700; color: var(--primary); flex-shrink: 0; }
+        .price-card.featured .fl li::before { color: #93C5FD; }
+        .btn-price { display: block; width: 100%; padding: 14px; border-radius: 50px; font-size: 16px; font-weight: 600; text-align: center; text-decoration: none; cursor: pointer; border: none; }
+        .btn-price.free { background: var(--border); color: var(--text); }
+        .btn-price.pro { background: white; color: var(--primary); }
+
+        /* CTA */
+        .cta-section { text-align: center; padding: 100px 24px; background: linear-gradient(180deg,var(--bg),var(--surface)); }
+        .cta-section h2 { font-size: clamp(28px, 4vw, 42px); font-weight: 800; margin-bottom: 18px; letter-spacing: -1px; }
+        .cta-section p { font-size: 17px; color: var(--text-secondary); max-width: 480px; margin: 0 auto 36px; }
+
+        footer { border-top: 1px solid var(--border); padding: 32px 24px; text-align: center; color: var(--text-secondary); font-size: 14px; }
+        footer a { color: var(--primary); text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+
+        @media (max-width: 768px) {
+            .nav-links a:not(.lang-only) { display: none; }
+            .hero { padding: 120px 20px 60px; }
+            .section-title, .section-desc { text-align: center; }
+            .section-desc { margin-left: auto; margin-right: auto; }
+            .steps-section { padding: 40px 24px; margin: 0 16px; border-radius: 24px; }
+            .pricing-cards { grid-template-columns: 1fr; max-width: 340px; }
+            .nav-left { gap: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- 导航栏 / Navbar -->
+<nav class="navbar">
+    <div class="nav-left">
+        <div class="nav-logo">Speak<span>Note</span></div>
+    </div>
+    <div class="nav-links">
+        <a href="#features" data-i18n="nav.features">功能特性</a>
+        <a href="#screens" data-i18n="nav.screens">应用预览</a>
+        <a href="#pricing" data-i18n="nav.pricing">价格方案</a>
+        <a href="privacy.html" data-i18n="nav.privacy">隐私政策</a>
+        <div class="lang-toggle" id="langToggle" onclick="toggleLang()" title="Switch Language / 切换语言">
+            <span id="langZh">中</span>
+            <span id="langEn">EN</span>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+    <div class="hero-badge" data-i18n="hero.badge" data-i18n-html="true">&#x1F512; 100% 离线 &middot; 零云端上传</div>
+    <h1 data-i18n="hero.h1" data-i18n-html="true">想到什么，<br><span class="hl">说完就有文字</span></h1>
+    <p data-i18n="hero.desc">SpeakNote 是一款极简离线语音速记工具。打开 App，按下录音，你的声音即刻变成文字笔记——全程在本地完成，不上传任何数据。</p>
+    <div class="hero-buttons">
+        <a href="https://play.google.com/store/apps/details?id=com.yndongyong.speakmore" target="_blank" rel="noopener" class="btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M3.609 1.814 13.792 12 3.61 22.186c-.181-.09-.301-.27-.301-.479V2.293c0-.208.12-.389.3-.479zm11.05 9.45L21.87 2.68l-8.212 4.863-2.57 1.519 2.57 1.52 1.001.59zM3.62 1.04l18.002 10.58a.496.496 0 0 1 .177.176L13.79 12l8.008.704a.496.496 0 0 1-.177.175L3.618 23.46c.033-.178.073-.356.118-.53.045-.173.095-.344.151-.51l9.903-9.91-9.903-9.91A6.66 6.66 0 0 0 3.62 1.04z"/></svg>
+            <span data-i18n="hero.btn_install">Google Play 安装</span>
+        </a>
+        <a href="#features" class="btn-secondary"><span data-i18n="hero.btn_learn">了解更多</span> &darr;</a>
+    </div>
+</section>
+
+<!-- 功能特性 / Features -->
+<section id="features">
+    <div class="section-label" data-i18n="features.label">核心功能</div>
+    <h2 class="section-title" data-i18n="features.title">为隐私而生的语音速记工具</h2>
+    <p class="section-desc" data-i18n="features.desc">所有语音采集、AI 推理、文字处理均在本地完成，严格遵循安卓隐私合规规范。</p>
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon">&#x1F3A4;</div>
+            <h3 data-i18n="features.card1.title">一键录音，实时转写</h3>
+            <p data-i18n="features.card1.desc">打开 App 按下录音按钮即刻开始，说话的同时文字逐字实时出现在屏幕上。说完点停止，录音和转写文本自动保存。</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">&#x1F512;</div>
+            <h3 data-i18n="features.card2.title">纯本地离线运行</h3>
+            <p data-i18n="features.card2.desc">基于 ONNX Runtime 端侧推理，内置阿里轻量化 ASR 模型 + VAD 语音活动检测，无需联网，零数据上传。</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">&#x1F4BE;</div>
+            <h3 data-i18n="features.card3.title">自动保存记录</h3>
+            <p data-i18n="features.card3.desc">每次停止识别自动保存转写文本和录音文件至 App 私有目录，支持标签分类、搜索回顾，灵感永不丢失。</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">&#x26A1;</div>
+            <h3 data-i18n="features.card4.title">轻量低功耗</h3>
+            <p data-i18n="features.card4.desc">针对移动端深度优化的轻量级模型，控制耗电与发热，长时间连续识别稳定流畅，适配主流机型。</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">&#x1F3A8;</div>
+            <h3 data-i18n="features.card5.title">极简纯净体验</h3>
+            <p data-i18n="features.card5.desc">无广告、无多余权限、无强制联网。深浅色模式自由切换，字号可调，专注内容本身。</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">&#x1F527;</div>
+            <h3 data-i18n="features.card6.title">自定义模型（Pro）</h3>
+            <p data-i18n="features.card6.desc">支持导入 Paraformer / Zipformer / Transducer 等多种 ONNX 格式模型，自主控制识别效果与性能。</p>
+        </div>
+    </div>
+</section>
+
+<!-- 使用步骤 / Steps -->
+<div class="steps-section">
+    <div class="section-label" style="text-align:center;" data-i18n="steps.label">简单三步</div>
+    <h2 class="section-title" style="text-align:center;" data-i18n="steps.title">想到什么，说就好</h2>
+    <div class="steps-list">
+        <div class="step-item">
+            <div class="step-num">1</div>
+            <div class="step-content">
+                <h4 data-i18n="steps.step1.title">打开 SpeakNote</h4>
+                <p data-i18n="steps.step1.desc">首次启动后即可使用，无需注册登录，无需联网授权。</p>
+            </div>
+        </div>
+        <div class="step-item">
+            <div class="step-num">2</div>
+            <div class="step-content">
+                <h4 data-i18n="steps.step2.title">按下录音，开口说话</h4>
+                <p data-i18n="steps.step2.desc">点击右下角蓝色麦克风按钮开始录音，实时看到转写文字出现。</p>
+            </div>
+        </div>
+        <div class="step-item">
+            <div class="step-num">3</div>
+            <div class="step-content">
+                <h4 data-i18n="steps.step3.title">点一下停止，保存完成</h4>
+                <p data-i18n="steps.step3.desc">说完了就点停止按钮，文字和录音自动保存好。随时回来听、编辑或分享。</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 应用页面展示 / Screenshots -->
+<section id="screens">
+    <div class="section-label" data-i18n="screens.label">应用预览</div>
+    <h2 class="section-title" data-i18n="screens.title">精心设计的每一个页面</h2>
+    <p class="section-desc" data-i18n="screens.desc">遵循「极简纯净」的设计理念，大量留白，内容优先。</p>
+    <div class="screens-grid">
+        <div class="screen-item">
+            <div class="screen-mockup"><img data-img-id="1" src="images/zh-1.png" alt="Onboarding" loading="lazy"></div>
+            <p data-i18n="screens.caption1">启动引导</p>
+        </div>
+        <div class="screen-item">
+            <div class="screen-mockup"><img data-img-id="2" src="images/zh-2.png" alt="Home" loading="lazy"></div>
+            <p data-i18n="screens.caption2">首页 · 历史记录</p>
+        </div>
+        <div class="screen-item">
+            <div class="screen-mockup"><img data-img-id="3" src="images/zh-3.png" alt="Detail" loading="lazy"></div>
+            <p data-i18n="screens.caption3">记录详情</p>
+        </div>
+        <div class="screen-item">
+            <div class="screen-mockup"><img data-img-id="4" src="images/zh-4.png" alt="Model Management" loading="lazy"></div>
+            <p data-i18n="screens.caption4">模型管理（Pro）</p>
+        </div>
+    </div>
+</section>
+
+<!-- 价格方案 / Pricing -->
+<section id="pricing">
+    <div class="section-label" data-i18n="pricing.label">价格方案</div>
+    <h2 class="section-title" data-i18n="pricing.title">基础功能永久免费</h2>
+    <p class="section-desc" style="text-align:center;margin-left:auto;margin-right:auto;" data-i18n="pricing.desc">核心语音速记功能完全免费且无限制。Pro 版本一次性解锁自定义模型导入切换能力。</p>
+    <div class="pricing-cards">
+        <div class="price-card">
+            <div class="price-label" data-i18n="pricing.free.label">免费版</div>
+            <h3>SpeakNote Free</h3>
+            <div class="price-tag" data-i18n="pricing.free.tag">免费</div>
+            <div class="price-desc" data-i18n="pricing.free.desc">永久免费，无使用限制</div>
+            <ul class="fl">
+                <li data-i18n="pricing.free.f1">离线中文 ASR 语音识别</li>
+                <li data-i18n="pricing.free.f2">VAD 降噪与智能断句</li>
+                <li data-i18n="pricing.free.f3">实时流式转写</li>
+                <li data-i18n="pricing.free.f4">历史记录管理与标签分类</li>
+                <li data-i18n="pricing.free.f5">音频回放、复制与分享</li>
+                <li data-i18n="pricing.free.f6">深色模式与字号调节</li>
+            </ul>
+            <a href="https://play.google.com/store/apps/details?id=com.yndongyong.speakmore" target="_blank" rel="noopener" class="btn-price free" data-i18n="pricing.free.btn">前往安装</a>
+        </div>
+        <div class="price-card featured">
+            <div class="price-label" data-i18n="pricing.pro.label">推荐</div>
+            <h3>SpeakNote Pro</h3>
+            <div class="price-tag" data-i18n="pricing.pro.tag">一次性购买</div>
+            <div class="price-desc" data-i18n="pricing.pro.desc">永久解锁，无订阅费用</div>
+            <ul class="fl">
+                <li data-i18n="pricing.pro.f1">包含免费版全部功能</li>
+                <li data-i18n="pricing.pro.f2">自定义 ONNX 模型导入</li>
+                <li data-i18n="pricing.pro.f3">Paraformer / Zipformer / Transducer 支持</li>
+                <li data-i18n="pricing.pro.f4">多模型列表化管理</li>
+                <li data-i18n="pricing.pro.f5">一键切换推理模型</li>
+                <li data-i18n="pricing.pro.f6">未来高级功能更新</li>
+            </ul>
+            <a href="https://play.google.com/store/apps/details?id=com.yndongyong.speakmore" target="_blank" rel="noopener" class="btn-price pro" data-i18n="pricing.pro.btn">立即升级 Pro</a>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+    <h2 data-i18n="cta.title">开始你的离线语音速记之旅</h2>
+    <p data-i18n="cta.desc">无需注册，无需联网，保护你的每一句语音隐私。</p>
+    <a href="https://play.google.com/store/apps/details?id=com.yndongyong.speakmore" target="_blank" rel="noopener" class="btn-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M3.609 1.814 13.792 12 3.61 22.186c-.181-.09-.301-.27-.301-.479V2.293c0-.208.12-.389.3-.479zm11.05 9.45L21.87 2.68l-8.212 4.863-2.57 1.519 2.57 1.52 1.001.59zM3.62 1.04l18.002 10.58a.496.496 0 0 1 .177.176L13.79 12l8.008.704a.496.496 0 0 1-.177.175L3.618 23.46c.033-.178.073-.356.118-.53.045-.173.095-.344.151-.51l9.903-9.91-9.903-9.91A6.66 6.66 0 0 0 3.62 1.04z"/></svg>
+        <span data-i18n="cta.btn">免费下载 SpeakNote</span>
+    </a>
+</section>
+
+<footer>
+    <p data-i18n="footer.copyright" data-i18n-html="true">&copy; 2026 SpeakNote. 所有权利保留。 &middot; <a href=\"privacy.html\">隐私政策</a></p>
+</footer>
+
+<script>
+// ====== i18n System ======
+const T = {
+    zh: {
+        'nav.features': '功能特性', 'nav.screens': '应用预览', 'nav.pricing': '价格方案', 'nav.privacy': '隐私政策',
+        'hero.badge': '🔒 100% 离线识别 · 笔记内容零云端上传',
+        'hero.h1': '想到什么，<br><span class="hl">说完就有文字</span>',
+        'hero.desc': 'SpeakNote 是一款极简离线语音速记工具。打开 App，按下录音，你的声音即刻变成文字笔记——全程在本地完成，不上传任何数据。',
+        'hero.btn_install': 'Google Play 安装', 'hero.btn_learn': '了解更多',
+        'features.label': '核心功能', 'features.title': '为隐私而生的语音速记工具',
+        'features.desc': '所有语音采集、AI 推理、文字处理均在本地完成，严格遵循安卓隐私合规规范。',
+        'features.card1.title': '一键录音，实时转写',
+        'features.card1.desc': '打开 App 按下录音按钮即刻开始，说话的同时文字逐字实时出现在屏幕上。说完点停止，录音和转写文本自动保存。',
+        'features.card2.title': '纯本地离线运行',
+        'features.card2.desc': '基于 ONNX Runtime 端侧推理，内置阿里轻量化 ASR 模型 + VAD 语音活动检测，无需联网，零数据上传。',
+        'features.card3.title': '自动保存记录',
+        'features.card3.desc': '每次停止识别自动保存转写文本和录音文件至 App 私有目录，支持标签分类、搜索回顾，灵感永不丢失。',
+        'features.card4.title': '轻量低功耗',
+        'features.card4.desc': '针对移动端深度优化的轻量级模型，控制耗电与发热，长时间连续识别稳定流畅，适配主流机型。',
+        'features.card5.title': '极简纯净体验',
+        'features.card5.desc': '无广告、无多余权限、无强制联网。深浅色模式自由切换，专注内容本身。',
+        'features.card6.title': '自定义模型（Pro）',
+        'features.card6.desc': '支持导入 Paraformer / Zipformer / Transducer 等多种 ONNX 格式模型，自主控制识别效果与性能。',
+        'steps.label': '简单三步', 'steps.title': '想到什么，说就好',
+        'steps.step1.title': '打开 SpeakNote', 'steps.step1.desc': '首次启动后即可使用，无需注册登录，无需联网授权。',
+        'steps.step2.title': '按下录音，开口说话', 'steps.step2.desc': '点击右下角蓝色麦克风按钮开始录音，实时看到转写文字出现。',
+        'steps.step3.title': '点一下停止，保存完成', 'steps.step3.desc': '说完了就点停止按钮，文字和录音自动保存好。随时回来听、编辑或分享。',
+        'screens.label': '应用预览', 'screens.title': '精心设计的每一个页面',
+        'screens.desc': '遵循「极简纯净」的设计理念，大量留白，内容优先。',
+        'screens.caption1': '启动引导', 'screens.caption2': '首页 · 历史记录',
+        'screens.caption3': '记录详情', 'screens.caption4': '模型管理（Pro）',
+        'pricing.label': '价格方案', 'pricing.title': '基础功能永久免费',
+        'pricing.desc': '核心语音速记功能完全免费且无限制。Pro 版本一次性解锁自定义模型导入切换能力。',
+        'pricing.free.label': '免费版', 'pricing.free.tag': '免费', 'pricing.free.desc': '永久免费，无使用限制',
+        'pricing.free.f1': '离线中文 ASR 语音识别', 'pricing.free.f2': 'VAD 降噪与智能断句',
+        'pricing.free.f3': '实时流式转写', 'pricing.free.f4': '历史记录管理与标签分类',
+        'pricing.free.f5': '音频回放、复制与分享', 'pricing.free.f6': '深色模式',
+        'pricing.free.btn': '前往安装',
+        'pricing.pro.label': '推荐', 'pricing.pro.tag': '一次性购买', 'pricing.pro.desc': '永久解锁，无订阅费用',
+        'pricing.pro.f1': '包含免费版全部功能', 'pricing.pro.f2': '自定义 ONNX 模型导入',
+        'pricing.pro.f3': 'Paraformer / Zipformer / Transducer 支持', 'pricing.pro.f4': '多模型列表化管理',
+        'pricing.pro.f5': '一键切换推理模型', 'pricing.pro.f6': '未来高级功能更新',
+        'pricing.pro.btn': '立即升级 Pro',
+        'cta.title': '开始你的离线语音速记之旅',
+        'cta.desc': '无需注册，无需联网，保护你的每一句语音隐私。',
+        'cta.btn': '免费下载 SpeakNote',
+        'footer.copyright': '&copy; 2026 SpeakNote. 所有权利保留。 · <a href="privacy.html">隐私政策</a>'
+    },
+    en: {
+        'nav.features': 'Features', 'nav.screens': 'Preview', 'nav.pricing': 'Pricing', 'nav.privacy': 'Privacy',
+        'hero.badge': '🔒 100% Offline Recognition · Zero Cloud Upload for Your Notes',
+        'hero.h1': 'Speak your mind,<br><span class="hl">words appear instantly</span>',
+        'hero.desc': 'SpeakNote is a minimalist offline voice notes app. Press record, speak, and your voice becomes text instantly — all processing happens locally on your device. No data leaves your phone.',
+        'hero.btn_install': 'Install from Google Play', 'hero.btn_learn': 'Learn More',
+        'features.label': 'Core Features', 'features.title': 'Privacy-first Voice Notes',
+        'features.desc': 'All voice capture, AI inference, and text processing happens locally on your device, fully compliant with Android privacy standards.',
+        'features.card1.title': 'One-Tap Record, Real-Time Transcription',
+        'features.card1.desc': 'Open the app and tap record to start. Words appear on screen as you speak. Tap stop when done — recording and transcript are auto-saved.',
+        'features.card2.title': 'Fully Offline',
+        'features.card2.desc': 'Powered by ONNX Runtime on-device inference with lightweight ASR models + VAD voice activity detection. No internet required, zero data upload.',
+        'features.card3.title': 'Auto-Save History',
+        'features.card3.desc': 'Every recording is auto-saved with its transcript to the private app directory. Tag, search, and revisit your ideas anytime.',
+        'features.card4.title': 'Lightweight & Efficient',
+        'features.card4.desc': 'Optimized lightweight models for mobile. Low battery drain, minimal heat. Smooth performance even during extended sessions on mainstream devices.',
+        'features.card5.title': 'Clean & Distraction-Free',
+        'features.card5.desc': 'No ads, no unnecessary permissions, no forced connectivity. Light/dark mode — focus on your content.',
+        'features.card6.title': 'Custom Models (Pro)',
+        'features.card6.desc': 'Import Paraformer, Zipformer, Transducer and other ONNX format models for full control over recognition quality and performance.',
+        'steps.label': '3 Simple Steps', 'steps.title': 'Just Speak Your Mind',
+        'steps.step1.title': 'Open SpeakNote', 'steps.step1.desc': 'Ready to use on first launch. No registration, no login, no internet required.',
+        'steps.step2.title': 'Tap Record & Speak', 'steps.step2.desc': 'Tap the blue mic button to start recording. Watch your words appear as text in real-time.',
+        'steps.step3.title': 'Tap Stop & Save', 'steps.step3.desc': 'Tap the stop button when done. Your recording and transcript are auto-saved. Come back anytime to listen, edit, or share.',
+        'screens.label': 'App Preview', 'screens.title': 'Every Screen, Thoughtfully Crafted',
+        'screens.desc': 'Following the "minimalist & clean" design philosophy — generous whitespace, content-first approach.',
+        'screens.caption1': 'Onboarding', 'screens.caption2': 'Home · History',
+        'screens.caption3': 'Note Detail', 'screens.caption4': 'Model Manager (Pro)',
+        'pricing.label': 'Pricing', 'pricing.title': 'Core Features Free Forever',
+        'pricing.desc': 'Core voice-to-text features are completely free with no limits. Unlock custom model import & switching with a one-time Pro purchase.',
+        'pricing.free.label': 'Free Tier', 'pricing.free.tag': 'Free', 'pricing.free.desc': 'Free forever, no usage limits',
+        'pricing.free.f1': 'Offline Chinese ASR recognition', 'pricing.free.f2': 'VAD noise reduction & smart segmentation',
+        'pricing.free.f3': 'Real-time streaming transcription', 'pricing.free.f4': 'History management & tag classification',
+        'pricing.free.f5': 'Audio playback, copy & share', 'pricing.free.f6': 'Dark mode',
+        'pricing.free.btn': 'Get it on Google Play',
+        'pricing.pro.label': 'Recommended', 'pricing.pro.tag': 'One-Time Purchase', 'pricing.pro.desc': 'Unlock forever, no subscription',
+        'pricing.pro.f1': 'All Free tier features', 'pricing.pro.f2': 'Custom ONNX model import',
+        'pricing.pro.f3': 'Paraformer / Zipformer / Transducer support', 'pricing.pro.f4': 'Multi-model management',
+        'pricing.pro.f5': 'One-tap model switching', 'pricing.pro.f6': 'Future advanced feature updates',
+        'pricing.pro.btn': 'Upgrade to Pro',
+        'cta.title': 'Start Your Offline Voice Notes Journey',
+        'cta.desc': 'No registration, no internet required. Your voice, your privacy, fully protected.',
+        'cta.btn': 'Download SpeakNote Free',
+        'footer.copyright': '&copy; 2026 SpeakNote. All rights reserved. · <a href="privacy.html">Privacy Policy</a>'
+    }
+};
+
+let currentLang = 'zh';
+
+function applyLang(lang) {
+    currentLang = lang;
+    document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+    // Update toggle buttons
+    document.getElementById('langZh').classList.toggle('active', lang === 'zh');
+    document.getElementById('langEn').classList.toggle('active', lang === 'en');
+    // Update all [data-i18n] elements
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        const text = T[lang][key];
+        if (text !== undefined) {
+            if (el.hasAttribute('data-i18n-html')) {
+                el.innerHTML = text;
+            } else {
+                el.textContent = text;
+            }
+        }
+    });
+    // Update screenshots to match language
+    document.querySelectorAll('img[data-img-id]').forEach(img => {
+        const id = img.getAttribute('data-img-id');
+        img.src = `images/${lang}-${id}.png`;
+    });
+    // Update document title
+    document.title = lang === 'zh' ? 'SpeakNote - 离线AI语音速记' : 'SpeakNote - Offline AI Voice Notes';
+    // Save preference
+    try { localStorage.setItem('speaknote_lang', lang); } catch(e) {}
+}
+
+function toggleLang() {
+    applyLang(currentLang === 'zh' ? 'en' : 'zh');
+}
+
+// Init on DOM ready
+document.addEventListener('DOMContentLoaded', () => {
+    const saved = (() => { try { return localStorage.getItem('speaknote_lang'); } catch(e) { return null; } })();
+    const preferred = saved || (navigator.language.startsWith('zh') ? 'zh' : 'en');
+    applyLang(preferred);
+});
+</script>
+
+</body>
+</html>
